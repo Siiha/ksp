@@ -5,7 +5,7 @@ def tarkistus(pelaajan_valinta,koneen_valinta):
     if pelaajan_valinta==t[t.index(koneen_valinta)-1]: print("Voitit!"); return 1
     elif pelaajan_valinta==koneen_valinta: print("Tasapeli!"); return 0
     else: print("Hävisit!"); return 0
-def historian_kapistely(p):
+def historian_kapistely(pelaajan_valinta):
 	try:
 		f = open('historia.txt','r+')
 		try:
@@ -19,13 +19,13 @@ def historian_kapistely(p):
 	finally:
 		f.close()
 	return Counter(r.replace('\n',""))
-def tallenna(pelaaja,k):
+def tallenna(pelaaja,kierokset):
     try:
         f= open('tulokset.txt','a')
     except:
         print("Tiedostoa ei voinut avata.")
     try:
-        f.write(f"{pelaaja['nimi']} voitot:{pelaaja['voitot']}/{k}\n")
+        f.write(f"{pelaaja['nimi']} voitot:{pelaaja['voitot']}/{kierokset}\n")
     except:
         print("Tiedostoon ei voinut kirjoittaa.")
     finally: f.close()
@@ -54,15 +54,15 @@ def main():
 ---.__________)
 """} 
     pelaaja = {'nimi':input('Nimimerkkisi: '),'voitot': 0,'käsi':""};
-    j = 1 # jatka
-    k = 0 # kierokset
-    while j:
+    jatka = 1 
+    kierokset = 0 
+    while jatka:
         pelaaja['käsi']=input("Kätesi k:kivi s:sakset p:paperi: ")
-        b = botin_valinta(historian_kapistely(pelaaja['käsi']))
-        print(h[b])
-        pelaaja['voitot']+=tarkistus(pelaaja['käsi'],b)
-        j = int(input("Haluatko jatkaa 1: kyllä 0: ei: "))
-        k += 1
+        bot = botin_valinta(historian_kapistely(pelaaja['käsi']))
+        print(h[bot])
+        pelaaja['voitot']+=tarkistus(pelaaja['käsi'],bot)
+        jatka = int(input("Haluatko jatkaa 1: kyllä 0: ei: "))
+        kierokset += 1
     if int(input("Haluatko talentaa tuloksen 1: kyllä 0: ei: ")):
-        tallenna(pelaaja,k)
+        tallenna(pelaaja,kierokset)
 main()
