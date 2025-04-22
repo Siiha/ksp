@@ -6,9 +6,9 @@ def tarkistus(p,b):
     if pk==t[t.index(b)-1]: print("Voitit!"); p['voitot']+=1
     elif pk==b: print("Tasapeli!")
     else: print("Hävisit!")
-def datakapistely(p):
+def historian_kapistely(p):
 	try:
-		f = open('data.txt','r+')
+		f = open('historia.txt','r+')
 		try:
 			r = f.read()
 		except:
@@ -59,7 +59,7 @@ def main():
     k = 0 # kierokset
     while j:
         p['käsi']=input("Kätesi k:kivi s:sakset p:paperi: ")
-        b = b_valinta(datakapistely(p['käsi']))
+        b = b_valinta(historian_kapistely(p['käsi']))
         print(h[b])
         tarkistus(p,b)
         j = int(input("Haluatko jatkaa 1: kyllä 0: ei: "))
