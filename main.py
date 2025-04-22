@@ -1,28 +1,25 @@
 #r10
 from collections import Counter
-t = "ksp";ti = t.index
-
-   
+t = "ksp"
 def tarkistus(p,b):
     pk = p['käsi']
-    if pk==t[ti(b)-1]: print("Voitit!"); p['voitot']+=1
-    elif ti(pk)==ti(b): print("Tasapeli!")
+    if pk==t[t.index(b)-1]: print("Voitit!"); p['voitot']+=1
+    elif pk==b: print("Tasapeli!")
     else: print("Hävisit!")
 def datakapistely(p):
 	try:
-		f = open('data.txt','a+')
+		f = open('data.txt','r+')
 		try:
-			f.seek(1)
 			r = f.read()
 		except:
 			print("Tiedostoa ei voinut lukea!")
 		try:
-			f.write(str(ti(p)))
+			f.write(str(t.index(p)))
 		except:
 			print("Tiedostoon ei voinut kirjoittaa!")
 	finally:
 		f.close()
-	return Counter(r)
+	return Counter(r.replace('\n',""))
 def tallenna(p,k):
     try:
         f= open('tulokset.txt','a')
@@ -32,10 +29,8 @@ def tallenna(p,k):
         f.write(f"{p['nimi']} voitot:{p['voitot']}/{k}\n")
     except:
         print("Tiedostoon ei voinut kirjoittaa.")
-def b_valinta(d):
-    l = tuple
-    k,v=l(d.keys()),l(d.values())
-    return t[int(k[v.index(max(v))])-1]
+    finally: f.close()
+b_valinta = lambda d: t[int(d.most_common()[0][0])]
 def main():
     h = {"k":"""
     _______
@@ -60,8 +55,8 @@ def main():
 ---.__________)
 """} 
     p = {'nimi':input('Nimimerkkisi: '),'voitot': 0,'käsi':""};
-    j = 1
-    k = 0
+    j = 1 # jatka
+    k = 0 # kierokset
     while j:
         p['käsi']=input("Kätesi k:kivi s:sakset p:paperi: ")
         b = b_valinta(datakapistely(p['käsi']))
