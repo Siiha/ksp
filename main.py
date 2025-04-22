@@ -30,7 +30,7 @@ def tallenna(p,k):
     except:
         print("Tiedostoon ei voinut kirjoittaa.")
     finally: f.close()
-b_valinta = lambda d: t[int(d.most_common()[0][0])]
+b_valinta = lambda d: t[int(d.most_common()[0][0])-1]
 def main():
     h = {"k":"""
     _______
