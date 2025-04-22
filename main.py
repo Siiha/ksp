@@ -1,11 +1,10 @@
 #r10
 from collections import Counter
 t = "ksp"
-def tarkistus(p,b):
-    pk = p['käsi']
-    if pk==t[t.index(b)-1]: print("Voitit!"); p['voitot']+=1
-    elif pk==b: print("Tasapeli!")
-    else: print("Hävisit!")
+def tarkistus(pelaajan_valinta,koneen_valinta):
+    if pelaajan_valinta==t[t.index(koneen_valinta)-1]: print("Voitit!"); return 1
+    elif pelaajan_valinta==koneen_valinta: print("Tasapeli!"); return 0
+    else: print("Hävisit!"); return 0
 def historian_kapistely(p):
 	try:
 		f = open('historia.txt','r+')
@@ -20,17 +19,17 @@ def historian_kapistely(p):
 	finally:
 		f.close()
 	return Counter(r.replace('\n',""))
-def tallenna(p,k):
+def tallenna(pelaaja,k):
     try:
         f= open('tulokset.txt','a')
     except:
         print("Tiedostoa ei voinut avata.")
     try:
-        f.write(f"{p['nimi']} voitot:{p['voitot']}/{k}\n")
+        f.write(f"{pelaaja['nimi']} voitot:{pelaaja['voitot']}/{k}\n")
     except:
         print("Tiedostoon ei voinut kirjoittaa.")
     finally: f.close()
-b_valinta = lambda d: t[int(d.most_common()[0][0])-1]
+botin_valinta = lambda d: t[int(d.most_common()[0][0])-1]
 def main():
     h = {"k":"""
     _______
@@ -54,16 +53,16 @@ def main():
          _______)
 ---.__________)
 """} 
-    p = {'nimi':input('Nimimerkkisi: '),'voitot': 0,'käsi':""};
+    pelaaja = {'nimi':input('Nimimerkkisi: '),'voitot': 0,'käsi':""};
     j = 1 # jatka
     k = 0 # kierokset
     while j:
-        p['käsi']=input("Kätesi k:kivi s:sakset p:paperi: ")
-        b = b_valinta(historian_kapistely(p['käsi']))
+        pelaaja['käsi']=input("Kätesi k:kivi s:sakset p:paperi: ")
+        b = botin_valinta(historian_kapistely(pelaaja['käsi']))
         print(h[b])
-        tarkistus(p,b)
+        pelaaja['voitot']+=tarkistus(pelaaja['käsi'],b)
         j = int(input("Haluatko jatkaa 1: kyllä 0: ei: "))
         k += 1
     if int(input("Haluatko talentaa tuloksen 1: kyllä 0: ei: ")):
-        tallenna(p,k)
+        tallenna(pelaaja,k)
 main()
