@@ -13,7 +13,7 @@ def historian_kapistely(pelaajan_valinta):
 		except:
 			print("Tiedostoa ei voinut lukea!")
 		try:
-			f.write(str(t.index(p)))
+			f.write(str(t.index(pelaajan_valinta)))
 		except:
 			print("Tiedostoon ei voinut kirjoittaa!")
 	finally:
