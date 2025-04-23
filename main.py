@@ -1,34 +1,22 @@
 #r10
+# Siina Hakala
 from collections import Counter
 t = "ksp"
 def tarkistus(pelaajan_valinta,koneen_valinta):
-    if pelaajan_valinta==t[t.index(koneen_valinta)-1]: print("Voitit!"); return 1
-    elif pelaajan_valinta==koneen_valinta: print("Tasapeli!"); return 0
-    else: print("Hävisit!"); return 0
+    
+    if pelaajan_valinta==t[t.index(koneen_valinta)-1]: print("Voitit!"); x=1
+    elif pelaajan_valinta==koneen_valinta: print("Tasapeli!"); x=0
+    else: print("Hävisit!"); x=0
+    return x
 def historian_kapistely(pelaajan_valinta):
-	try:
-		f = open('historia.txt','r+')
-		try:
-			r = f.read()
-		except:
-			print("Tiedostoa ei voinut lukea!")
-		try:
-			f.write(str(t.index(pelaajan_valinta)))
-		except:
-			print("Tiedostoon ei voinut kirjoittaa!")
-	finally:
-		f.close()
-	return Counter(r.replace('\n',""))
+	with open('historia.txt','r+') as f:
+          r = f.read().replace('\n','')
+          f.write(str(t.index(pelaajan_valinta)))
+          return Counter(r)
 def tallenna(pelaaja,kierokset):
-    try:
-        f= open('tulokset.txt','a')
-    except:
-        print("Tiedostoa ei voinut avata.")
-    try:
+    with open('tulokset.txt','r+') as f:
         f.write(f"{pelaaja['nimi']} voitot:{pelaaja['voitot']}/{kierokset}\n")
-    except:
-        print("Tiedostoon ei voinut kirjoittaa.")
-    finally: f.close()
+    
 botin_valinta = lambda d: t[int(d.most_common()[0][0])-1]
 def main():
     h = {"k":"""
